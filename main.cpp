@@ -170,7 +170,7 @@ static cl::Program createClProgram(const std::string &pathToSrc, const char *con
     return program;
 }
 
-class Rnd4BLin  {
+class Rnd4Lin  : public RndBase {
 private:
     utyp64 a,b,c,d;
     utyp32 sa,sb,sc,sd;
@@ -192,7 +192,7 @@ private:
         }
     }
 public:
-    Rnd4BLin( cutyp64 __sd) {
+    Rnd4Lin( cutyp64 __sd) {
         seed( __sd );
     }
     void seed( cutyp64 __sd ) {
