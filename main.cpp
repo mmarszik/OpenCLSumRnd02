@@ -170,7 +170,7 @@ static cl::Program createClProgram(const std::string &pathToSrc, const char *con
     return program;
 }
 
-class Rnd4Lin  : public RndBase {
+class Rnd4Lin {
 private:
     utyp64 a,b,c,d;
     utyp32 sa,sb,sc,sd;
@@ -222,7 +222,7 @@ static std::vector<utyp64> mkSeeds(
     const char *const seed,
     const char *const n_tasks
 ) {
-    Rnd4BLin rnd( atoi(seed) );
+    Rnd4Lin rnd( atoi(seed) );
     std::vector<utyp64> seeds( atoi(n_tasks) );
     for( utyp32 i=0 ; i<seeds.size() ; i++ ) {
         seeds[i] = rnd();
@@ -293,7 +293,7 @@ static std::vector<utyp64> versionOpenMP(
         #pragma omp parallel for
         for( utyp32 i=0 ; i<seeds.size() ; i++ ) {
             sums[i] = 0;
-            Rnd4BLin rnd( seeds[i] );
+            Rnd4Lin rnd( seeds[i] );
             for( utyp64 j=0 ; j<n_loops ; j++ ) {
                 sums[i] += rnd();
             }
@@ -312,7 +312,7 @@ static std::vector<utyp64> versionOneThread(
     const auto start = std::chrono::steady_clock::now();
     for( utyp32 i=0 ; i<seeds.size() ; i++ ) {
         sums[i] = 0;
-        Rnd4BLin rnd( seeds[i] );
+        Rnd4Lin rnd( seeds[i] );
         for( utyp64 j=0 ; j<n_loops ; j++ ) {
             sums[i] += rnd();
         }
@@ -349,7 +349,7 @@ int main(int argc, char *argv[]) {
     std::vector<utyp64> sums;
 
     std::chrono::duration<double> elapsedTime;
-    if( strcasecmp( argv[ARG_MODEL] , "OpenCl") == 0 ) {        Rnd4BLin rnd(12345);
+    if( strcasecmp( argv[ARG_MODEL] , "OpenCl") == 0 ) {        Rnd4Lin rnd(12345);
         sums = versionOpenCL( seeds , n_loops , argv[ARG_VERB] , elapsedTime );
     } else if( strcasecmp( argv[ARG_MODEL] , "OpenMP") == 0 ) {
         sums = versionOpenMP( seeds , n_loops , elapsedTime );
